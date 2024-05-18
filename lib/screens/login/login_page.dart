@@ -37,9 +37,22 @@ class _LoginPageState extends State<LoginPage> {
 
 
 
-  void getPhone() async {
+  void getPhone()  {
+    Future.delayed(const Duration(seconds: 1), () async {
       phoneNumber = await SmsAutoFill().hint;
       phoneController.text = phoneNumber ?? '';
+
+      if (phoneController.text != '') {
+        Get.to(
+          OtpPage(phone: phoneController.text,),
+          // const Home(),
+          transition: Transition.downToUp,
+          duration: const Duration(milliseconds: 800),
+        );
+      }
+    });
+
+
   }
 
 
