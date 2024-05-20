@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:untitled/screens/home/dashboard/report/attendance_report.dart';
+import 'package:untitled/screens/home/dashboard/workingOn/working_on.dart';
 
 import '../../../widgets/bottomNavBar/navbar_item.dart';
 import 'checkedin/checkin_page.dart';
@@ -46,7 +47,7 @@ class DashboardState extends State<Dashboard> {
       const CheckInPage(),
       const AttendanceReport(),
       Container(color: Colors.blue),
-      Container(color: Colors.yellow),
+      const WorkingOn(),
     ];
 
     return PopScope(
