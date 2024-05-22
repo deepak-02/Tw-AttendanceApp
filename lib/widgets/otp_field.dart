@@ -7,14 +7,16 @@ class OtpField extends StatelessWidget {
     required this.otpController,
     this.width,
     this.height,
-    this.onChanged, this.autofocus, this.textInputAction,
+    this.onChanged,
+    this.autofocus,
+    this.textInputAction,
   });
 
   final TextEditingController otpController;
-  final double ? width;
-  final double ? height;
+  final double? width;
+  final double? height;
   final void Function(String)? onChanged;
-  final bool ? autofocus;
+  final bool? autofocus;
   final TextInputAction? textInputAction;
 
   @override
@@ -43,10 +45,7 @@ class OtpField extends StatelessWidget {
         },
         textAlign: TextAlign.center,
         textAlignVertical: TextAlignVertical.top,
-        style: const TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 18
-        ),
+        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
         controller: otpController,
         decoration: const InputDecoration(
           border: OutlineInputBorder(
@@ -55,12 +54,9 @@ class OtpField extends StatelessWidget {
           counterText: '',
         ),
         textInputAction: textInputAction ?? TextInputAction.none,
-        keyboardType:
-        TextInputType.number,
-        inputFormatters: <
-            TextInputFormatter>[
-          FilteringTextInputFormatter
-              .digitsOnly
+        keyboardType: TextInputType.number,
+        inputFormatters: <TextInputFormatter>[
+          FilteringTextInputFormatter.digitsOnly
         ],
       ),
     );

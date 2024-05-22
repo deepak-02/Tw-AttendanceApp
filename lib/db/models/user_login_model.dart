@@ -1,23 +1,43 @@
 // To parse this JSON data, do
 //
-//     final userLogin = userLoginFromJson(jsonString);
+//     final userLoginModel = userLoginModelFromJson(jsonString);
 
 import 'dart:convert';
 
-UserLogin userLoginFromJson(String str) => UserLogin.fromJson(json.decode(str));
+UserLoginModel userLoginModelFromJson(String str) => UserLoginModel.fromJson(json.decode(str));
 
-String userLoginToJson(UserLogin data) => json.encode(data.toJson());
+String userLoginModelToJson(UserLoginModel data) => json.encode(data.toJson());
 
-class UserLogin {
+class UserLoginModel {
+  Data? data;
+  bool? success;
+
+  UserLoginModel({
+    this.data,
+    this.success,
+  });
+
+  factory UserLoginModel.fromJson(Map<String, dynamic> json) => UserLoginModel(
+    data: json["data"] == null ? null : Data.fromJson(json["data"]),
+    success: json["success"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "data": data?.toJson(),
+    "success": success,
+  };
+}
+
+class Data {
   List<User>? user;
   bool? success;
 
-  UserLogin({
+  Data({
     this.user,
     this.success,
   });
 
-  factory UserLogin.fromJson(Map<String, dynamic> json) => UserLogin(
+  factory Data.fromJson(Map<String, dynamic> json) => Data(
     user: json["user"] == null ? [] : List<User>.from(json["user"]!.map((x) => User.fromJson(x))),
     success: json["success"],
   );

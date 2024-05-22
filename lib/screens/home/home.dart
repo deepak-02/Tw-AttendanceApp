@@ -1,8 +1,10 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:untitled/screens/home/qr_scan_page.dart';
 
 import '../../widgets/background.dart';
@@ -20,9 +22,14 @@ class Home extends StatefulWidget {
 class HomeState extends State<Home> {
   Timer? _timer;
 
+  String ? name;
+  String ? jobInfo;
+  String ? image;
+
   @override
   void initState() {
     super.initState();
+    loadProfile();
     _timer = Timer.periodic(const Duration(seconds: 1), (Timer t) {
       setState(() {});
     });
@@ -65,20 +72,29 @@ class HomeState extends State<Home> {
                                 duration: const Duration(milliseconds: 500),
                               );
                             },
-                            child: Container(
+                            child:
+                              image == "" || image!.isEmpty || image == null ?
+                            Container(
                               height: 40,
                               width: 40,
                               decoration: BoxDecoration(
                                   color: Colors.white,
                                   borderRadius: BorderRadius.circular(100)),
+                            ) : Container(
+                              height: 40,
+                              width: 40,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(image: NetworkImage("$image")),
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(100)),
                             ),
                           ),
                         ),
-                        const Column(
+                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "User Name",
+                              name ?? "User Name",
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 16,
@@ -87,7 +103,7 @@ class HomeState extends State<Home> {
                               ),
                             ),
                             Text(
-                              'Senior Creative Designer',
+                              jobInfo ?? 'Senior Creative Designer',
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 11,
@@ -281,5 +297,16 @@ class HomeState extends State<Home> {
     } else {
       return 'Good Evening';
     }
+  }
+
+  void loadProfile() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    name = prefs.getString("name");
+    jobInfo = prefs.getString("jobInfo");
+    image = prefs.getString("image");
+    setState(() {
+
+    });
   }
 }

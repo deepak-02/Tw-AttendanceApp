@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../services/locator.dart';
 import '../../widgets/background.dart';
@@ -231,6 +232,7 @@ class _QrScanPageState extends State<QrScanPage> {
                                     }
 
                                     // Handle the scanned data here
+                                    setCheckInData();
 
                                     // Fluttertoast.showToast(
                                     //     msg: "${scanData.code}",
@@ -325,5 +327,10 @@ class _QrScanPageState extends State<QrScanPage> {
         ],
       ),
     );
+  }
+
+  void setCheckInData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool("checkIn", true);
   }
 }

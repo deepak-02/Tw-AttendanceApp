@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:untitled/screens/home/dashboard/report/attendance_report.dart';
 import 'package:untitled/screens/home/dashboard/workingOn/working_on.dart';
 
@@ -9,6 +10,7 @@ class Dashboard extends StatefulWidget {
   const Dashboard({super.key, this.index});
 
   final int? index;
+
   @override
   DashboardState createState() => DashboardState();
 }
@@ -16,11 +18,12 @@ class Dashboard extends StatefulWidget {
 class DashboardState extends State<Dashboard> {
   int _currentIndex = 0;
   late final PageController _pageController;
+  bool checkIn = true;
 
   @override
   void initState() {
     super.initState();
-
+    checkCheckIn();
     if (widget.index != null) {
       _currentIndex = widget.index!;
     }
@@ -41,6 +44,12 @@ class DashboardState extends State<Dashboard> {
     super.dispose();
   }
 
+  void checkCheckIn() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    checkIn = prefs.getBool("checkIn")!;
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     List<Widget> pages = [
@@ -51,8 +60,8 @@ class DashboardState extends State<Dashboard> {
     ];
 
     return PopScope(
-      canPop:
-          true, //_currentIndex== 0, // Disable back gesture if not on the first page
+      canPop: true,
+      //_currentIndex== 0, // Disable back gesture if not on the first page
       onPopInvoked: (bool didPop) {
         // if (!didPop) {
         //   // Navigate to the first page if the back gesture was blocked
@@ -94,7 +103,7 @@ class DashboardState extends State<Dashboard> {
                 children: <Widget>[
                   NavbarItem(
                     isSelected: _currentIndex == 0 ? true : false,
-                    toolTip: 'Check Out',
+                    toolTip: checkIn ? 'Check Out' : 'Check In',
                     onTap: () {
                       setState(() {
                         _currentIndex = 0;
@@ -102,7 +111,7 @@ class DashboardState extends State<Dashboard> {
                       });
                     },
                     svgImage: "assets/icons/let_me_checkin_dark.svg",
-                    text: 'CHECK OUT',
+                    text: checkIn ? 'CHECK OUT' : 'CHECK IN',
                   ),
                   const SizedBox(
                     height: 35,

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import '../home/dashboard/dashboard.dart';
+import '../home/home.dart';
 import '../login/login_page.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -19,23 +22,13 @@ class _SplashScreenState extends State<SplashScreen> {
     //   statusBarColor: Colors.transparent,
     //   statusBarIconBrightness: Brightness.light,
     // ));
-
-    Future.delayed(const Duration(seconds: 2), () {
-      Get.offAll(
-        // const Home(),
-        const LoginPage(),
-        transition: Transition.zoom,
-        duration: const Duration(milliseconds: 800),
-      );
-    });
+    checkLogin();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        // height: MediaQuery.of(context).size.height,
-        // width: MediaQuery.of(context).size.width,
         alignment: Alignment.center,
         decoration: const BoxDecoration(
           image: DecorationImage(
@@ -48,13 +41,42 @@ class _SplashScreenState extends State<SplashScreen> {
           child: SvgPicture.asset(
             "assets/icons/splash_logo1.svg",
           ),
-
-          // Image.asset(
-          //   "assets/icons/splash_logo.png",
-          //   fit: BoxFit.fitWidth,
-          // )
         ),
       ),
     );
+  }
+
+  void checkLogin() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String phone = prefs.getString("phone") ?? '';
+    bool? checkIn = prefs.getBool("checkIn");
+
+    if (phone != '') {
+      if (checkIn == true) {
+        Future.delayed(const Duration(seconds: 2), () {
+          Get.offAll(
+            const Dashboard(),
+            transition: Transition.circularReveal,
+            duration: const Duration(milliseconds: 800),
+          );
+        });
+      } else {
+        Future.delayed(const Duration(seconds: 2), () {
+          Get.offAll(
+            const Home(),
+            transition: Transition.circularReveal,
+            duration: const Duration(milliseconds: 800),
+          );
+        });
+      }
+    } else {
+      Future.delayed(const Duration(seconds: 2), () {
+        Get.offAll(
+          const LoginPage(),
+          transition: Transition.zoom,
+          duration: const Duration(milliseconds: 800),
+        );
+      });
+    }
   }
 }

@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 import '../../../../widgets/attendcard.dart';
 import '../../../../widgets/shifttiles.dart';
 import '../../../../widgets/timeindicator.dart';
 import '../../../profile/profile_page.dart';
 import '../../home.dart';
+import '../../qr_scan_page.dart';
 
 class CheckInPage extends StatefulWidget {
   const CheckInPage({super.key});
@@ -15,6 +18,14 @@ class CheckInPage extends StatefulWidget {
 }
 
 class _CheckInPageState extends State<CheckInPage> {
+  bool checkIn = true;
+
+  @override
+  void initState() {
+    super.initState();
+    checkCheckIn();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -147,30 +158,59 @@ class _CheckInPageState extends State<CheckInPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      ElevatedButton(
-                        onPressed: () {
-                          Get.off(const Home());
-                          // Implement check-in button functionality
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xffee6f6e),
-                          minimumSize: const Size(
-                              164, 58), // Adjust the button size here
-                          shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.only(
-                              // Adjust the border radius for one side
-                              bottomLeft: Radius.circular(10.0),
-                              bottomRight: Radius.circular(
-                                  10.0), // Adjust the border radius for one side
+                      if (checkIn)
+                        ElevatedButton(
+                          onPressed: () {
+                            setCheckOutData();
+                            Get.off(const Home());
+                            // Implement check-in button functionality
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xffee6f6e),
+                            minimumSize: const Size(
+                                164, 58), // Adjust the button size here
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.only(
+                                // Adjust the border radius for one side
+                                bottomLeft: Radius.circular(10.0),
+                                bottomRight: Radius.circular(
+                                    10.0), // Adjust the border radius for one side
+                              ),
                             ),
                           ),
+                          child: const Text(
+                            'CHECK OUT',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        )
+                      else
+                        ElevatedButton(
+                          onPressed: () {
+                            Get.to(
+                              // const Dashboard(index: 0,),
+                              const QrScanPage(),
+                              transition: Transition.zoom,
+                              duration: const Duration(milliseconds: 500),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xffee6f6e),
+                            minimumSize: const Size(
+                                164, 58), // Adjust the button size here
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.only(
+                                // Adjust the border radius for one side
+                                bottomLeft: Radius.circular(10.0),
+                                bottomRight: Radius.circular(
+                                    10.0), // Adjust the border radius for one side
+                              ),
+                            ),
+                          ),
+                          child: const Text(
+                            'CHECK IN',
+                            style: TextStyle(color: Colors.white),
+                          ),
                         ),
-                        child: const Text(
-                          'CHECK OUT',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
-                      // Add space between buttons
                       ElevatedButton(
                         onPressed: () {
                           // Implement check-out button functionality
@@ -258,5 +298,16 @@ class _CheckInPageState extends State<CheckInPage> {
         ),
       ),
     );
+  }
+
+  void setCheckOutData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool("checkIn", false);
+  }
+
+  void checkCheckIn() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    checkIn = prefs.getBool("checkIn")!;
+    setState(() {});
   }
 }

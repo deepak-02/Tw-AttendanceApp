@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:untitled/screens/login/login_page.dart';
 
 import '../../widgets/profile_tile.dart';
 
@@ -10,6 +13,25 @@ class ProfilePage extends StatefulWidget {
 }
 
 class ProfilePageState extends State<ProfilePage> {
+
+
+  String ? phone;
+  String ? name;
+  String ? address;
+  String ? email;
+  String ? jobInfo;
+  String ? manager;
+  String ? team;
+  String ? image;
+  String ? userId;
+
+  @override
+  void initState() {
+    super.initState();
+    loadProfile();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,11 +63,22 @@ class ProfilePageState extends State<ProfilePage> {
                     child: Stack(
                       alignment: Alignment.center,
                       children: [
+                        if (image == "" || image!.isEmpty || image == null)
                         Container(
                           height: 110,
                           width: 110,
                           decoration: BoxDecoration(
                             color: Colors.white,
+                            borderRadius: BorderRadius.circular(100),
+                          ),
+                        )
+                        else
+                        Container(
+                          height: 110,
+                          width: 110,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            image: DecorationImage(image: NetworkImage("$image")),
                             borderRadius: BorderRadius.circular(100),
                           ),
                         ),
@@ -70,18 +103,18 @@ class ProfilePageState extends State<ProfilePage> {
                       ],
                     ),
                   ),
-                  const Text(
-                    'User Name',
-                    style: TextStyle(
+                   Text(
+                    name ?? 'User Name',
+                    style: const TextStyle(
                       color: Colors.white,
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
                       height: 0,
                     ),
                   ),
-                  const Text(
-                    'Senior Creative Designer',
-                    style: TextStyle(
+                   Text(
+                    jobInfo ?? 'Senior Creative Designer',
+                    style: const TextStyle(
                       color: Colors.white,
                       fontSize: 11,
                       fontWeight: FontWeight.w300,
@@ -120,21 +153,21 @@ class ProfilePageState extends State<ProfilePage> {
               ),
             ),
           ),
-          const ProfileTile(
+           ProfileTile(
             title: "Phone Number",
-            content: "9078908990",
+            content: phone ?? "90908908990",
           ),
-          const ProfileTile(
+           ProfileTile(
             title: "Mail",
-            content: "abcd@techwyseintl.com",
+            content: email ?? "abcd@techwyseintl.com",
           ),
-          const ProfileTile(
+           ProfileTile(
             title: "Manager",
-            content: "Frinley Paul",
+            content: manager ?? "Some Manager",
           ),
-          const ProfileTile(
+           ProfileTile(
             title: "Team",
-            content: "Twintl - Team Oasis",
+            content: team ?? "Twintl - Team WyseGuys",
           ),
           Padding(
             padding: const EdgeInsets.only(left: 20, top: 8),
@@ -160,9 +193,63 @@ class ProfilePageState extends State<ProfilePage> {
                 ),
               ),
             ),
-          )
+          ),
+
+          // // LOG OUT
+          // Padding(
+          //   padding: const EdgeInsets.all(8),
+          //   child: SizedBox(
+          //     width: 400,
+          //     height: 50,
+          //     child: ElevatedButton(
+          //       style: ElevatedButton.styleFrom(
+          //         elevation: 3,
+          //         backgroundColor: const Color(0xff21206a),
+          //         shape: RoundedRectangleBorder(
+          //             borderRadius: BorderRadius.circular(8.0)),
+          //         minimumSize: const Size(100, 40),
+          //       ),
+          //       onPressed: () async {
+          //         SharedPreferences prefs =
+          //             await SharedPreferences.getInstance();
+          //         prefs.clear();
+          //
+          //         Get.offAll(
+          //           const LoginPage(),
+          //           transition: Transition.circularReveal,
+          //           duration: const Duration(milliseconds: 800),
+          //         );
+          //       },
+          //       child: const Text(
+          //         'Log Out',
+          //         style: TextStyle(color: Colors.white, fontSize: 20),
+          //       ),
+          //     ),
+          //   ),
+          // ),
+
+
+
         ],
       ),
     );
+  }
+
+  void loadProfile() async {
+   SharedPreferences prefs = await SharedPreferences.getInstance();
+
+   phone = prefs.getString("phone");
+   name = prefs.getString("name");
+   address = prefs.getString("address");
+   email = prefs.getString("email");
+   jobInfo = prefs.getString("jobInfo");
+   manager = prefs.getString("manager");
+   team = prefs.getString("team");
+   image = prefs.getString("image");
+   userId = prefs.getString("userId");
+   print(image);
+   setState(() {
+
+   });
   }
 }

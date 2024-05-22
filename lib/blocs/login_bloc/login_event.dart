@@ -11,7 +11,6 @@ class PhoneChangeEvent extends LoginEvent {
 
 class LoginBtnClickEvent extends LoginEvent {}
 
-
 // otp section
 
 class OtpChangeEvent extends LoginEvent {

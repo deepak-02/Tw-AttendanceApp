@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+
 import '../../../../widgets/attendcard.dart';
 import '../../../../widgets/datepicker.dart';
 
 class AttendanceReport extends StatelessWidget {
   const AttendanceReport({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,7 +65,7 @@ class AttendanceReport extends StatelessWidget {
             child: ListView.builder(
               itemCount: 15,
               itemBuilder: (context, index) {
-                return  const ListTile(
+                return const ListTile(
                   title: AttendanceWidget(
                     date: 'Monday 1 April 2024',
                     presentText: 'Present',

@@ -8,10 +8,10 @@ class AttendanceWidget extends StatelessWidget {
   final String checkOutTime;
   final String totalHours;
 
-  final double ? topLeftCurve;
-  final double ? topRightCurve;
-  final double ? bottomLeftCurve;
-  final double ? bottomRightCurve;
+  final double? topLeftCurve;
+  final double? topRightCurve;
+  final double? bottomLeftCurve;
+  final double? bottomRightCurve;
 
   const AttendanceWidget({
     super.key,
@@ -19,14 +19,18 @@ class AttendanceWidget extends StatelessWidget {
     required this.presentText,
     required this.checkInTime,
     required this.checkOutTime,
-    required this.totalHours, this.topLeftCurve, this.topRightCurve, this.bottomLeftCurve, this.bottomRightCurve,
+    required this.totalHours,
+    this.topLeftCurve,
+    this.topRightCurve,
+    this.bottomLeftCurve,
+    this.bottomRightCurve,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(16.0),
-      decoration:  BoxDecoration(
+      decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.only(
           // Adjust the border radius for one side

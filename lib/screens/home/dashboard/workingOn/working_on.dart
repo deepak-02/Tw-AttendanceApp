@@ -65,11 +65,11 @@ class WorkingOnState extends State<WorkingOn> {
         padding: const EdgeInsets.all(10),
         child: Container(
           color: Colors.white,
-          height: MediaQuery.of(context).size.height-205,
+          height: MediaQuery.of(context).size.height - 205,
           child: ListView.separated(
             itemCount: 15,
             itemBuilder: (context, index) {
-              return  ListTile(
+              return ListTile(
                 title: const Text(
                   "TechWyse Image Extensions 8th July 2022",
                   style: TextStyle(
@@ -90,14 +90,14 @@ class WorkingOnState extends State<WorkingOn> {
                   ),
                 ),
                 trailing: ElevatedButton(
-                  onPressed: (){},
+                  onPressed: () {},
                   style: ElevatedButton.styleFrom(
                     elevation: 1,
                     backgroundColor: const Color(0xFF8DC63F),
                     shape: RoundedRectangleBorder(
-                      side: const BorderSide(width: 0.44, color: Color(0xFF8DC63F)),
+                      side: const BorderSide(
+                          width: 0.44, color: Color(0xFF8DC63F)),
                       borderRadius: BorderRadius.circular(4),
-
                     ),
                     minimumSize: const Size(50, 35),
                   ),
@@ -113,12 +113,13 @@ class WorkingOnState extends State<WorkingOn> {
                   ),
                 ),
               );
-            }, separatorBuilder: (BuildContext context, int index) {
+            },
+            separatorBuilder: (BuildContext context, int index) {
               return const StyledDivider(
                 color: Color(0xff9A9A9A),
                 lineStyle: DividerLineStyle.dashed,
               );
-          },
+            },
           ),
 
           // Column(
