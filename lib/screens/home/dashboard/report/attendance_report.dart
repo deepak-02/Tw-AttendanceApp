@@ -65,8 +65,7 @@ class AttendanceReport extends StatelessWidget {
             child: ListView.builder(
               itemCount: 15,
               itemBuilder: (context, index) {
-                return const ListTile(
-                  title: AttendanceWidget(
+                return const AttendanceWidget(
                     date: 'Monday 1 April 2024',
                     presentText: 'Present',
                     checkInTime: '09:00 AM',
@@ -74,8 +73,7 @@ class AttendanceReport extends StatelessWidget {
                     totalHours: '8 hours',
                     bottomLeftCurve: 10,
                     bottomRightCurve: 10,
-                  ),
-                );
+                  );
               },
             ),
           ),
