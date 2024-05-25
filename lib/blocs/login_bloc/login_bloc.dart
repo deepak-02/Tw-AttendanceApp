@@ -131,8 +131,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
                 prefs.setString("address", result.data!.user!.first.paddress ?? '');
                 prefs.setString("email", result.data!.user!.first.pemail ?? '');
                 prefs.setString("jobInfo", result.data!.user!.first.jobInfo ?? '');
-                prefs.setString(
-                    "manager", result.data!.user!.first.managerName ?? '');
+                prefs.setString("manager", result.data!.user!.first.managerName ?? '');
                 prefs.setString("team", result.data!.user!.first.teams ?? '');
                 prefs.setString("image", result.data!.user!.first.pimage ?? '');
                 prefs.setString("userId", result.data!.user!.first.id ?? '');

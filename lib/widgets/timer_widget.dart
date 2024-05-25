@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:sms_autofill/sms_autofill.dart';
 import 'package:untitled/blocs/login_bloc/login_bloc.dart';
 
 class TimerWidget extends StatefulWidget {
@@ -17,13 +18,19 @@ class TimerWidgetState extends State<TimerWidget> {
   bool enableResend = false;
   Timer? timer;
 
-  void _resendCode() {
+  void _resendCode() async {
     //resend function
-    BlocProvider.of<LoginBloc>(context).add(LoginBtnClickEvent());
+    String signature = await SmsAutoFill().getAppSignature;
+   callBloc(signature);
     setState(() {
       secondsRemaining = 60;
       enableResend = false;
     });
+  }
+
+  void callBloc(String signature) {
+    // this is to avoid the warning :  Don't use 'BuildContext's across async gaps.
+    BlocProvider.of<LoginBloc>(context).add(VerifyOtpBtnClickEvent(signature: signature));
   }
 
   @override

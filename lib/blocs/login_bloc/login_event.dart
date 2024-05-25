@@ -19,4 +19,8 @@ class OtpChangeEvent extends LoginEvent {
   OtpChangeEvent({required this.otp});
 }
 
-class VerifyOtpBtnClickEvent extends LoginEvent {}
+class VerifyOtpBtnClickEvent extends LoginEvent {
+  final String signature;
+
+  VerifyOtpBtnClickEvent({required this.signature});
+}

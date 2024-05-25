@@ -22,48 +22,48 @@ class _QrScanPageState extends State<QrScanPage> {
 
   Position? currentPosition;
 
-  dynamic isNear;
-  final targetLocation = [
-    //home
-    Position(
-      latitude: 9.579191,
-      longitude: 76.315885,
-      timestamp: DateTime.now(),
-      accuracy: 0.0,
-      altitude: 0.0,
-      altitudeAccuracy: 0.0,
-      heading: 0.0,
-      headingAccuracy: 0.0,
-      speed: 0.0,
-      speedAccuracy: 0.0,
-    ),
-    //office
-    Position(
-      latitude: 9.966287037167914,
-      longitude: 76.29507080515788,
-      timestamp: DateTime.now(),
-      accuracy: 0.0,
-      altitude: 0.0,
-      altitudeAccuracy: 0.0,
-      heading: 0.0,
-      headingAccuracy: 0.0,
-      speed: 0.0,
-      speedAccuracy: 0.0,
-    ),
-    // valparai
-    Position(
-      latitude: 10.325789171013938,
-      longitude: 76.95583307172461,
-      timestamp: DateTime.now(),
-      accuracy: 0.0,
-      altitude: 0.0,
-      altitudeAccuracy: 0.0,
-      heading: 0.0,
-      headingAccuracy: 0.0,
-      speed: 0.0,
-      speedAccuracy: 0.0,
-    ),
-  ];
+  // dynamic isNear;
+  // final targetLocation = [
+  //   //home
+  //   Position(
+  //     latitude: 9.579191,
+  //     longitude: 76.315885,
+  //     timestamp: DateTime.now(),
+  //     accuracy: 0.0,
+  //     altitude: 0.0,
+  //     altitudeAccuracy: 0.0,
+  //     heading: 0.0,
+  //     headingAccuracy: 0.0,
+  //     speed: 0.0,
+  //     speedAccuracy: 0.0,
+  //   ),
+  //   //office
+  //   Position(
+  //     latitude: 9.966287037167914,
+  //     longitude: 76.29507080515788,
+  //     timestamp: DateTime.now(),
+  //     accuracy: 0.0,
+  //     altitude: 0.0,
+  //     altitudeAccuracy: 0.0,
+  //     heading: 0.0,
+  //     headingAccuracy: 0.0,
+  //     speed: 0.0,
+  //     speedAccuracy: 0.0,
+  //   ),
+  //   // valparai
+  //   Position(
+  //     latitude: 10.325789171013938,
+  //     longitude: 76.95583307172461,
+  //     timestamp: DateTime.now(),
+  //     accuracy: 0.0,
+  //     altitude: 0.0,
+  //     altitudeAccuracy: 0.0,
+  //     heading: 0.0,
+  //     headingAccuracy: 0.0,
+  //     speed: 0.0,
+  //     speedAccuracy: 0.0,
+  //   ),
+  // ];
 
   @override
   void initState() {
@@ -84,13 +84,13 @@ class _QrScanPageState extends State<QrScanPage> {
       setState(() {});
     }
 
-    for (int i = 0; i <= targetLocation.length; i++) {
-      if (await isNearTargetLocation(targetLocation[i])) {
-        isNear = true;
-        setState(() {});
-        break;
-      }
-    }
+    // for (int i = 0; i <= targetLocation.length; i++) {
+    //   if (await isNearTargetLocation(targetLocation[i])) {
+    //     isNear = true;
+    //     setState(() {});
+    //     break;
+    //   }
+    // }
   }
 
   @override
@@ -113,12 +113,12 @@ class _QrScanPageState extends State<QrScanPage> {
                           padding: const EdgeInsets.all(10),
                           child: GestureDetector(
                             onTap: () async {
-                              await isNearTargetLocation(targetLocation[1]);
-                              if (isNear) {
-                                debugPrint("near");
-                              } else {
-                                debugPrint("not near");
-                              }
+                              // await isNearTargetLocation(targetLocation[1]);
+                              // if (isNear) {
+                              //   debugPrint("near");
+                              // } else {
+                              //   debugPrint("not near");
+                              // }
                             },
                             child: Container(
                               height: 40,
@@ -194,15 +194,16 @@ class _QrScanPageState extends State<QrScanPage> {
 
                 Padding(
                   padding: const EdgeInsets.only(top: 30, bottom: 50),
-                  child: isNear == null
-                      ? Container(
-                          alignment: Alignment.center,
-                          color: Colors.grey,
-                          height: 196,
-                          width: 196,
-                          child: const CircularProgressIndicator(),
-                        )
-                      : Stack(
+                  child:
+                  // isNear == null
+                  //     ? Container(
+                  //         alignment: Alignment.center,
+                  //         color: Colors.grey,
+                  //         height: 196,
+                  //         width: 196,
+                  //         child: const CircularProgressIndicator(),
+                  //       ) :
+                  Stack(
                           children: [
                             //replace it with a qr scan viewfinder
                             // Container(
@@ -216,6 +217,7 @@ class _QrScanPageState extends State<QrScanPage> {
                               alignment: Alignment.center,
                               height: 196,
                               width: 196,
+                              color: Colors.grey,
                               child: QRView(
                                 key: GlobalKey(),
                                 onQRViewCreated:
@@ -229,6 +231,8 @@ class _QrScanPageState extends State<QrScanPage> {
                                       print(
                                           'QR Code Scanned: ${scanData.code}');
                                       print('Scanned: $index');
+                                      print('latitude: ${currentPosition!.latitude}');
+                                      print('longitude: ${currentPosition!.longitude}');
                                     }
 
                                     // Handle the scanned data here
@@ -290,18 +294,19 @@ class _QrScanPageState extends State<QrScanPage> {
                       borderRadius: BorderRadius.circular(7),
                     ),
                   ),
-                  child: isNear == null || isNear == false
-                      ? const Text(
-                          "Not allowed",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                            fontFamily: 'Inter',
-                            fontWeight: FontWeight.w600,
-                            height: 0,
-                          ),
-                        )
-                      : const Text(
+                  child:
+                  // isNear == null || isNear == false
+                  //     ? const Text(
+                  //         "Not allowed",
+                  //         style: TextStyle(
+                  //           color: Colors.white,
+                  //           fontSize: 18,
+                  //           fontFamily: 'Inter',
+                  //           fontWeight: FontWeight.w600,
+                  //           height: 0,
+                  //         ),
+                  //       ) :
+                  const Text(
                           'Scanning Code...',
                           style: TextStyle(
                             color: Colors.white,

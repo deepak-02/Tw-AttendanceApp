@@ -18,12 +18,17 @@ class CheckInPage extends StatefulWidget {
 }
 
 class _CheckInPageState extends State<CheckInPage> {
-  bool checkIn = true;
+  bool checkIn = false;
+
+  String ? name;
+  String ? jobInfo;
+  String ? image;
 
   @override
   void initState() {
     super.initState();
     checkCheckIn();
+    loadProfile();
   }
 
   @override
@@ -37,49 +42,72 @@ class _CheckInPageState extends State<CheckInPage> {
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(kToolbarHeight),
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(30, 10, 10, 10),
-                child: GestureDetector(
-                  onTap: () {
-                    Get.to(
-                      const ProfilePage(),
-                      transition: Transition.leftToRightWithFade,
-                      duration: const Duration(milliseconds: 500),
-                    );
-                  },
-                  child: Container(
-                    height: 40,
-                    width: 40,
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(100)),
-                  ),
-                ),
-              ),
-              const Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              Row(
                 children: [
-                  Text(
-                    "User Name",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                      height: 0,
+                  Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: GestureDetector(
+                      onTap: () {
+                        Get.to(
+                          const ProfilePage(),
+                          transition: Transition.leftToRightWithFade,
+                          duration: const Duration(milliseconds: 500),
+                        );
+                      },
+                      child:
+                      image == "" || image == null ?
+                      Container(
+                        height: 40,
+                        width: 40,
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(100)),
+                      ) : Container(
+                        height: 40,
+                        width: 40,
+                        decoration: BoxDecoration(
+                            image: DecorationImage(image: NetworkImage("$image")),
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(100)),
+                      ),
                     ),
                   ),
-                  Text(
-                    'Senior Creative Designer',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 11,
-                      fontWeight: FontWeight.w300,
-                      height: 0,
-                    ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        name ?? "User Name",
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          height: 0,
+                        ),
+                      ),
+                      Text(
+                        jobInfo ?? 'Senior Creative Designer',
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 11,
+                          fontWeight: FontWeight.w300,
+                          height: 0,
+                        ),
+                      )
+                    ],
                   )
                 ],
-              )
+              ),
+              Padding(
+                padding: const EdgeInsets.all(10),
+                child: SizedBox(
+                    width: 32,
+                    child: Image.asset(
+                      "assets/icons/splash_logo.png",
+                      fit: BoxFit.fitWidth,
+                    )),
+              ),
             ],
           ),
         ),
@@ -162,7 +190,7 @@ class _CheckInPageState extends State<CheckInPage> {
                         ElevatedButton(
                           onPressed: () {
                             setCheckOutData();
-                            Get.off(const Home());
+                            Get.offAll(const Home());
                             // Implement check-in button functionality
                           },
                           style: ElevatedButton.styleFrom(
@@ -310,4 +338,16 @@ class _CheckInPageState extends State<CheckInPage> {
     checkIn = prefs.getBool("checkIn")!;
     setState(() {});
   }
+
+  void loadProfile() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    name = prefs.getString("name");
+    jobInfo = prefs.getString("jobInfo");
+    image = prefs.getString("image");
+    setState(() {
+
+    });
+  }
 }
+

@@ -18,7 +18,7 @@ class Dashboard extends StatefulWidget {
 class DashboardState extends State<Dashboard> {
   int _currentIndex = 0;
   late final PageController _pageController;
-  bool checkIn = true;
+  bool checkIn = false;
 
   @override
   void initState() {

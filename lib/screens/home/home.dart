@@ -73,7 +73,7 @@ class HomeState extends State<Home> {
                               );
                             },
                             child:
-                              image == "" || image!.isEmpty || image == null ?
+                              image == "" || image == null ?
                             Container(
                               height: 40,
                               width: 40,

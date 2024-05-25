@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart' as nav;
 import 'package:sms_autofill/sms_autofill.dart';
+import 'package:untitled/screens/home/home.dart';
 
 import '../../blocs/login_bloc/login_bloc.dart';
 import 'otp_page.dart';
@@ -202,11 +203,12 @@ class _LoginPageState extends State<LoginPage> {
                                   borderRadius: BorderRadius.circular(8.0)),
                               minimumSize: const Size(100, 40),
                             ),
-                            onPressed: () {
+                            onPressed: () async {
                               print("aaaaaa");
+                              String signature = await SmsAutoFill().getAppSignature;
                               loginBloc.add(PhoneChangeEvent(
                                   phone: phoneController.text));
-                              loginBloc.add(VerifyOtpBtnClickEvent());
+                              loginBloc.add(VerifyOtpBtnClickEvent(signature: signature));
                             },
                             child: const Text(
                               'Continue',
@@ -234,6 +236,11 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                   ],
                 ),
+                ElevatedButton(onPressed: (){ nav.Get.to(
+                  Home(),
+                  transition: nav.Transition.downToUp,
+                  duration: const Duration(milliseconds: 800),
+                );}, child: Text("Login without phone/otp")),
                 const Spacer(),
               ],
             );

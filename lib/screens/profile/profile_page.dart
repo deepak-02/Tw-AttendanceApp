@@ -63,7 +63,7 @@ class ProfilePageState extends State<ProfilePage> {
                     child: Stack(
                       alignment: Alignment.center,
                       children: [
-                        if (image == "" || image!.isEmpty || image == null)
+                        if (image == "" || image == null)
                         Container(
                           height: 110,
                           width: 110,
@@ -169,31 +169,33 @@ class ProfilePageState extends State<ProfilePage> {
             title: "Team",
             content: team ?? "Twintl - Team WyseGuys",
           ),
-          Padding(
-            padding: const EdgeInsets.only(left: 20, top: 8),
-            child: ElevatedButton(
-              onPressed: () {},
-              style: ElevatedButton.styleFrom(
-                foregroundColor: Colors.white,
-                backgroundColor: const Color(0xFF8DC63F), // Text color
-                shape: RoundedRectangleBorder(
-                  side: const BorderSide(
-                      width: 0.86, color: Color(0xFF8DC63F)), // Border
-                  borderRadius: BorderRadius.circular(6), // Border radius
-                ),
-                // minimumSize: Size(57.43, 36), // Width and height
-              ),
-              child: const Text(
-                "Edit",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 15.43,
-                  fontWeight: FontWeight.w600,
-                  height: 0,
-                ),
-              ),
-            ),
-          ),
+
+
+          // Padding(
+          //   padding: const EdgeInsets.only(left: 20, top: 8),
+          //   child: ElevatedButton(
+          //     onPressed: () {},
+          //     style: ElevatedButton.styleFrom(
+          //       foregroundColor: Colors.white,
+          //       backgroundColor: const Color(0xFF8DC63F), // Text color
+          //       shape: RoundedRectangleBorder(
+          //         side: const BorderSide(
+          //             width: 0.86, color: Color(0xFF8DC63F)), // Border
+          //         borderRadius: BorderRadius.circular(6), // Border radius
+          //       ),
+          //       // minimumSize: Size(57.43, 36), // Width and height
+          //     ),
+          //     child: const Text(
+          //       "Edit",
+          //       style: TextStyle(
+          //         color: Colors.white,
+          //         fontSize: 15.43,
+          //         fontWeight: FontWeight.w600,
+          //         height: 0,
+          //       ),
+          //     ),
+          //   ),
+          // ),
 
           // // LOG OUT
           // Padding(
