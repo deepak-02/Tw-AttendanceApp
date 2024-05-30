@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 import '../../../../widgets/attendcard.dart';
 import '../../../../widgets/datepicker.dart';
@@ -48,9 +49,9 @@ class AttendanceReport extends StatelessWidget {
                   padding: const EdgeInsets.all(10),
                   child: SizedBox(
                       width: 32,
-                      child: Image.asset(
-                        "assets/icons/splash_logo.png",
-                        fit: BoxFit.fitWidth,
+                      height: 32,
+                      child: SvgPicture.asset(
+                        "assets/icons/splash_logo1.svg",
                       )),
                 ),
               ],
@@ -65,7 +66,9 @@ class AttendanceReport extends StatelessWidget {
             child: ListView.builder(
               itemCount: 15,
               itemBuilder: (context, index) {
-                return const AttendanceWidget(
+                return const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: AttendanceWidget(
                     date: 'Monday 1 April 2024',
                     presentText: 'Present',
                     checkInTime: '09:00 AM',
@@ -73,7 +76,8 @@ class AttendanceReport extends StatelessWidget {
                     totalHours: '8 hours',
                     bottomLeftCurve: 10,
                     bottomRightCurve: 10,
-                  );
+                  ),
+                );
               },
             ),
           ),

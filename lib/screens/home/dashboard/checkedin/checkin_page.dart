@@ -20,9 +20,9 @@ class CheckInPage extends StatefulWidget {
 class _CheckInPageState extends State<CheckInPage> {
   bool checkIn = false;
 
-  String ? name;
-  String ? jobInfo;
-  String ? image;
+  String? name;
+  String? jobInfo;
+  String? image;
 
   @override
   void initState() {
@@ -56,22 +56,28 @@ class _CheckInPageState extends State<CheckInPage> {
                           duration: const Duration(milliseconds: 500),
                         );
                       },
-                      child:
-                      image == "" || image == null ?
-                      Container(
-                        height: 40,
-                        width: 40,
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(100)),
-                      ) : Container(
-                        height: 40,
-                        width: 40,
-                        decoration: BoxDecoration(
-                            image: DecorationImage(image: NetworkImage("$image")),
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(100)),
-                      ),
+                      child: image == "" || image == null
+                          ? Container(
+                              height: 40,
+                              width: 40,
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(100)),
+                              child: const Icon(
+                                Icons.person,
+                                color: Colors.black,
+                              ),
+                            )
+                          : Container(
+                              height: 40,
+                              width: 40,
+                              decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                      image: NetworkImage("$image")),
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(100)),
+                            ),
                     ),
                   ),
                   Column(
@@ -103,10 +109,14 @@ class _CheckInPageState extends State<CheckInPage> {
                 padding: const EdgeInsets.all(10),
                 child: SizedBox(
                     width: 32,
-                    child: Image.asset(
-                      "assets/icons/splash_logo.png",
-                      fit: BoxFit.fitWidth,
-                    )),
+                    child: SvgPicture.asset(
+                      "assets/icons/splash_logo1.svg",
+                    )
+                    // Image.asset(
+                    //   "assets/icons/splash_logo.png",
+                    //   fit: BoxFit.fitWidth,
+                    // )
+                    ),
               ),
             ],
           ),
@@ -345,9 +355,6 @@ class _CheckInPageState extends State<CheckInPage> {
     name = prefs.getString("name");
     jobInfo = prefs.getString("jobInfo");
     image = prefs.getString("image");
-    setState(() {
-
-    });
+    setState(() {});
   }
 }
-

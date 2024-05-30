@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:untitled/screens/home/dashboard/report/attendance_report.dart';
-import 'package:untitled/screens/home/dashboard/workingOn/working_on.dart';
+import 'package:attendance/screens/home/dashboard/report/attendance_report.dart';
+import 'package:attendance/screens/home/dashboard/workingOn/working_on.dart';
 
 import '../../../widgets/bottomNavBar/navbar_item.dart';
 import 'checkedin/checkin_page.dart';
@@ -55,7 +55,7 @@ class DashboardState extends State<Dashboard> {
     List<Widget> pages = [
       const CheckInPage(),
       const AttendanceReport(),
-      Container(color: Colors.blue),
+      Container(color: Colors.white,alignment: Alignment.center,child: const Text("Coming Soon...",style: TextStyle(fontSize: 18),),),
       const WorkingOn(),
     ];
 

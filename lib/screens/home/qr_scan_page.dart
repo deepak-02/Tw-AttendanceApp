@@ -22,6 +22,10 @@ class _QrScanPageState extends State<QrScanPage> {
 
   Position? currentPosition;
 
+  String? name;
+  String? jobInfo;
+  String? image;
+
   // dynamic isNear;
   // final targetLocation = [
   //   //home
@@ -69,6 +73,7 @@ class _QrScanPageState extends State<QrScanPage> {
   void initState() {
     super.initState();
     _getCurrentLocation();
+    loadProfile();
   }
 
   @override
@@ -112,29 +117,45 @@ class _QrScanPageState extends State<QrScanPage> {
                         Padding(
                           padding: const EdgeInsets.all(10),
                           child: GestureDetector(
-                            onTap: () async {
-                              // await isNearTargetLocation(targetLocation[1]);
-                              // if (isNear) {
-                              //   debugPrint("near");
-                              // } else {
-                              //   debugPrint("not near");
-                              // }
+                            onTap: () {
+                              // Get.to(
+                              //   const ProfilePage(),
+                              //   transition: Transition.leftToRightWithFade,
+                              //   duration: const Duration(milliseconds: 500),
+                              // );
                             },
-                            child: Container(
-                              height: 40,
-                              width: 40,
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(100)),
-                            ),
+                            child: image == "" || image == null
+                                ? Container(
+                                    height: 40,
+                                    width: 40,
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius:
+                                            BorderRadius.circular(100)),
+                                    child: const Icon(
+                                      Icons.person,
+                                      color: Colors.black,
+                                    ),
+                                  )
+                                : Container(
+                                    height: 40,
+                                    width: 40,
+                                    decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                            image: NetworkImage("$image")),
+                                        color: Colors.white,
+                                        borderRadius:
+                                            BorderRadius.circular(100)),
+                                  ),
                           ),
                         ),
-                        const Column(
+                        Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "User Name",
-                              style: TextStyle(
+                              name ?? "User Name",
+                              style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500,
@@ -142,8 +163,8 @@ class _QrScanPageState extends State<QrScanPage> {
                               ),
                             ),
                             Text(
-                              'Senior Creative Designer',
-                              style: TextStyle(
+                              jobInfo ?? 'Senior Creative Designer',
+                              style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 11,
                                 fontWeight: FontWeight.w300,
@@ -158,10 +179,14 @@ class _QrScanPageState extends State<QrScanPage> {
                       padding: const EdgeInsets.all(10),
                       child: SizedBox(
                           width: 32,
-                          child: Image.asset(
-                            "assets/icons/splash_logo.png",
-                            fit: BoxFit.fitWidth,
-                          )),
+                          child: SvgPicture.asset(
+                            "assets/icons/splash_logo1.svg",
+                          )
+                          // Image.asset(
+                          //   "assets/icons/splash_logo.png",
+                          //   fit: BoxFit.fitWidth,
+                          // )
+                          ),
                     ),
                   ],
                 ),
@@ -195,88 +220,84 @@ class _QrScanPageState extends State<QrScanPage> {
                 Padding(
                   padding: const EdgeInsets.only(top: 30, bottom: 50),
                   child:
-                  // isNear == null
-                  //     ? Container(
-                  //         alignment: Alignment.center,
-                  //         color: Colors.grey,
-                  //         height: 196,
-                  //         width: 196,
-                  //         child: const CircularProgressIndicator(),
-                  //       ) :
-                  Stack(
-                          children: [
-                            //replace it with a qr scan viewfinder
-                            // Container(
-                            //   alignment: Alignment.center,
-                            //   height: 196,
-                            //   width: 196,
-                            //   color: const Color(0xffd9d9d9),
-                            // ),
+                      // isNear == null
+                      //     ? Container(
+                      //         alignment: Alignment.center,
+                      //         color: Colors.grey,
+                      //         height: 196,
+                      //         width: 196,
+                      //         child: const CircularProgressIndicator(),
+                      //       ) :
+                      Stack(
+                    children: [
+                      //replace it with a qr scan viewfinder
+                      // Container(
+                      //   alignment: Alignment.center,
+                      //   height: 196,
+                      //   width: 196,
+                      //   color: const Color(0xffd9d9d9),
+                      // ),
 
-                            Container(
-                              alignment: Alignment.center,
-                              height: 196,
-                              width: 196,
-                              color: Colors.grey,
-                              child: QRView(
-                                key: GlobalKey(),
-                                onQRViewCreated:
-                                    (QRViewController newController) {
-                                  controller = newController;
-                                  controller.scannedDataStream
-                                      .listen((scanData) {
-                                    int index = 0;
-                                    index++;
-                                    if (kDebugMode) {
-                                      print(
-                                          'QR Code Scanned: ${scanData.code}');
-                                      print('Scanned: $index');
-                                      print('latitude: ${currentPosition!.latitude}');
-                                      print('longitude: ${currentPosition!.longitude}');
-                                    }
+                      Container(
+                        alignment: Alignment.center,
+                        height: 196,
+                        width: 196,
+                        color: Colors.grey,
+                        child: QRView(
+                          key: GlobalKey(),
+                          onQRViewCreated: (QRViewController newController) {
+                            controller = newController;
+                            controller.scannedDataStream.listen((scanData) {
+                              int index = 0;
+                              index++;
+                              if (kDebugMode) {
+                                print('QR Code Scanned: ${scanData.code}');
+                                print('Scanned: $index');
+                                print('latitude: ${currentPosition!.latitude}');
+                                print(
+                                    'longitude: ${currentPosition!.longitude}');
+                              }
 
-                                    // Handle the scanned data here
-                                    setCheckInData();
+                              // Handle the scanned data here
+                              setCheckInData();
 
-                                    // Fluttertoast.showToast(
-                                    //     msg: "${scanData.code}",
-                                    //     toastLength: Toast.LENGTH_SHORT,
-                                    //     gravity: ToastGravity.CENTER,
-                                    //     timeInSecForIosWeb: 1,
-                                    //     fontSize: 16.0
-                                    // );
+                              // Fluttertoast.showToast(
+                              //     msg: "${scanData.code}",
+                              //     toastLength: Toast.LENGTH_SHORT,
+                              //     gravity: ToastGravity.CENTER,
+                              //     timeInSecForIosWeb: 1,
+                              //     fontSize: 16.0
+                              // );
 
-                                    controller.pauseCamera();
-                                    newController.pauseCamera();
+                              controller.pauseCamera();
+                              newController.pauseCamera();
 
-                                    controller.dispose();
-                                    newController.dispose();
+                              controller.dispose();
+                              newController.dispose();
 
-                                    Get.off(
-                                      const Dashboard(
-                                        index: 0,
-                                      ),
-                                      transition: Transition.zoom,
-                                      duration:
-                                          const Duration(milliseconds: 500),
-                                    );
-                                  });
-                                },
-                              ),
-                            ),
-
-                            Container(
-                              alignment: Alignment.center,
-                              height: 196,
-                              width: 196,
-                              child: Opacity(
-                                opacity: 0.5,
-                                child: Image.asset(
-                                    "assets/images/qr_cross_img.png"),
-                              ),
-                            ),
-                          ],
+                              Get.off(
+                                const Dashboard(
+                                  index: 0,
+                                ),
+                                transition: Transition.zoom,
+                                duration: const Duration(milliseconds: 500),
+                              );
+                            });
+                          },
                         ),
+                      ),
+
+                      Container(
+                        alignment: Alignment.center,
+                        height: 196,
+                        width: 196,
+                        child: Opacity(
+                          opacity: 0.5,
+                          child: Image.asset("assets/images/qr_cross_img.png"),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
 
                 Container(
@@ -295,27 +316,27 @@ class _QrScanPageState extends State<QrScanPage> {
                     ),
                   ),
                   child:
-                  // isNear == null || isNear == false
-                  //     ? const Text(
-                  //         "Not allowed",
-                  //         style: TextStyle(
-                  //           color: Colors.white,
-                  //           fontSize: 18,
-                  //           fontFamily: 'Inter',
-                  //           fontWeight: FontWeight.w600,
-                  //           height: 0,
-                  //         ),
-                  //       ) :
-                  const Text(
-                          'Scanning Code...',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                            fontFamily: 'Inter',
-                            fontWeight: FontWeight.w600,
-                            height: 0,
-                          ),
-                        ),
+                      // isNear == null || isNear == false
+                      //     ? const Text(
+                      //         "Not allowed",
+                      //         style: TextStyle(
+                      //           color: Colors.white,
+                      //           fontSize: 18,
+                      //           fontFamily: 'Inter',
+                      //           fontWeight: FontWeight.w600,
+                      //           height: 0,
+                      //         ),
+                      //       ) :
+                      const Text(
+                    'Scanning Code...',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontFamily: 'Inter',
+                      fontWeight: FontWeight.w600,
+                      height: 0,
+                    ),
+                  ),
                 ),
 
                 // const SizedBox(height: 20,),
@@ -337,5 +358,14 @@ class _QrScanPageState extends State<QrScanPage> {
   void setCheckInData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool("checkIn", true);
+  }
+
+  void loadProfile() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    name = prefs.getString("name");
+    jobInfo = prefs.getString("jobInfo");
+    image = prefs.getString("image");
+    setState(() {});
   }
 }

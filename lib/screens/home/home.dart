@@ -5,7 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:untitled/screens/home/qr_scan_page.dart';
+import 'package:attendance/screens/home/qr_scan_page.dart';
 
 import '../../widgets/background.dart';
 import '../../widgets/home_tile.dart';
@@ -22,9 +22,9 @@ class Home extends StatefulWidget {
 class HomeState extends State<Home> {
   Timer? _timer;
 
-  String ? name;
-  String ? jobInfo;
-  String ? image;
+  String? name;
+  String? jobInfo;
+  String? image;
 
   @override
   void initState() {
@@ -72,30 +72,38 @@ class HomeState extends State<Home> {
                                 duration: const Duration(milliseconds: 500),
                               );
                             },
-                            child:
-                              image == "" || image == null ?
-                            Container(
-                              height: 40,
-                              width: 40,
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(100)),
-                            ) : Container(
-                              height: 40,
-                              width: 40,
-                              decoration: BoxDecoration(
-                                image: DecorationImage(image: NetworkImage("$image")),
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(100)),
-                            ),
+                            child: image == "" || image == null
+                                ? Container(
+                                    height: 40,
+                                    width: 40,
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius:
+                                            BorderRadius.circular(100)),
+                                    child: const Icon(
+                                      Icons.person,
+                                      color: Colors.black,
+                                    ),
+                                  )
+                                : Container(
+                                    height: 40,
+                                    width: 40,
+                                    decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                            image: NetworkImage("$image")),
+                                        color: Colors.white,
+                                        borderRadius:
+                                            BorderRadius.circular(100)),
+                                  ),
                           ),
                         ),
-                         Column(
+                        Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               name ?? "User Name",
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500,
@@ -104,7 +112,7 @@ class HomeState extends State<Home> {
                             ),
                             Text(
                               jobInfo ?? 'Senior Creative Designer',
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 11,
                                 fontWeight: FontWeight.w300,
@@ -119,9 +127,8 @@ class HomeState extends State<Home> {
                       padding: const EdgeInsets.all(10),
                       child: SizedBox(
                           width: 32,
-                          child: Image.asset(
-                            "assets/icons/splash_logo.png",
-                            fit: BoxFit.fitWidth,
+                          child: SvgPicture.asset(
+                            "assets/icons/splash_logo1.svg",
                           )),
                     ),
                   ],
@@ -305,8 +312,6 @@ class HomeState extends State<Home> {
     name = prefs.getString("name");
     jobInfo = prefs.getString("jobInfo");
     image = prefs.getString("image");
-    setState(() {
-
-    });
+    setState(() {});
   }
 }

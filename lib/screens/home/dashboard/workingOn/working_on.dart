@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:styled_divider/styled_divider.dart';
 
 class WorkingOn extends StatefulWidget {
@@ -51,9 +52,9 @@ class WorkingOnState extends State<WorkingOn> {
                   padding: const EdgeInsets.all(10),
                   child: SizedBox(
                       width: 32,
-                      child: Image.asset(
-                        "assets/icons/splash_logo.png",
-                        fit: BoxFit.fitWidth,
+                      height: 32,
+                      child: SvgPicture.asset(
+                        "assets/icons/splash_logo1.svg",
                       )),
                 ),
               ],

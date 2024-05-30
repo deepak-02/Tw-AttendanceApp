@@ -1,19 +1,19 @@
 import 'dart:async';
-
+import 'package:sms_autofill/sms_autofill.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:sms_autofill/sms_autofill.dart';
-import 'package:untitled/blocs/login_bloc/login_bloc.dart';
+import 'package:attendance/blocs/login_bloc/login_bloc.dart';
 
 class TimerWidget extends StatefulWidget {
-  const TimerWidget({super.key});
+  const TimerWidget({super.key, required this.phone});
 
+  final String phone;
   @override
   TimerWidgetState createState() => TimerWidgetState();
 }
 
-class TimerWidgetState extends State<TimerWidget> {
+class TimerWidgetState extends State<TimerWidget> with CodeAutoFill {
   int secondsRemaining = 60;
   bool enableResend = false;
   Timer? timer;
@@ -21,7 +21,7 @@ class TimerWidgetState extends State<TimerWidget> {
   void _resendCode() async {
     //resend function
     String signature = await SmsAutoFill().getAppSignature;
-   callBloc(signature);
+    callBloc(signature);
     setState(() {
       secondsRemaining = 60;
       enableResend = false;
@@ -30,12 +30,15 @@ class TimerWidgetState extends State<TimerWidget> {
 
   void callBloc(String signature) {
     // this is to avoid the warning :  Don't use 'BuildContext's across async gaps.
-    BlocProvider.of<LoginBloc>(context).add(VerifyOtpBtnClickEvent(signature: signature));
+    BlocProvider.of<LoginBloc>(context)
+        .add(VerifyOtpBtnClickEvent(signature: signature, phone: widget.phone));
   }
 
   @override
   void initState() {
     super.initState();
+
+    listenForCode();
 
     timer = Timer.periodic(const Duration(seconds: 1), (_) {
       if (secondsRemaining != 0) {
@@ -64,7 +67,7 @@ class TimerWidgetState extends State<TimerWidget> {
           Fluttertoast.showToast(
               msg: state.error,
               toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.CENTER,
+              gravity: ToastGravity.BOTTOM,
               timeInSecForIosWeb: 1,
               backgroundColor: const Color(0x3F000000),
               textColor: Colors.white,
@@ -75,16 +78,16 @@ class TimerWidgetState extends State<TimerWidget> {
         }
       },
       child: Container(
-        width: MediaQuery.of(context).size.width,
+        // width: MediaQuery.of(context).size.width,
         alignment: Alignment.center,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             const Text(
-              "Didn't get the OTP? ",
+              "Haven't received the OTP,",
               style: TextStyle(
-                fontSize: 16.0,
-                color: Colors.black,
+                fontSize: 12.0,
+                color: Color(0xFF6F6F6F),
               ),
             ),
             TextButton(
@@ -92,21 +95,25 @@ class TimerWidgetState extends State<TimerWidget> {
                 child: const Text(
                   "Resend",
                   style: TextStyle(
-                      fontSize: 16.0,
+                      fontSize: 12.0,
                       //color: Color(0xffffffff),
                       fontWeight: FontWeight.bold),
                 )),
             Text(
-              enableResend ? "" : "($secondsRemaining)",
+              enableResend ? "" : "in $secondsRemaining",
               style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 14.0,
-                color: Colors.black,
+                fontSize: 12.0,
+                color: Color(0xFF6F6F6F),
               ),
             ),
           ],
         ),
       ),
     );
+  }
+
+  @override
+  void codeUpdated() {
+    setState(() {});
   }
 }

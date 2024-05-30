@@ -5,10 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart' as nav;
-import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:sms_autofill/sms_autofill.dart';
 
 import '../../blocs/login_bloc/login_bloc.dart';
+import '../../widgets/background.dart';
 import '../../widgets/timer_widget.dart';
 import '../home/home.dart';
 
@@ -22,39 +22,24 @@ class OtpPage extends StatefulWidget {
 }
 
 class OtpPageState extends State<OtpPage> with CodeAutoFill {
-  TextEditingController otpController1 = TextEditingController();
-
-  // TextEditingController otpController2 = TextEditingController();
-  // TextEditingController otpController3 = TextEditingController();
-  // TextEditingController otpController4 = TextEditingController();
-  // TextEditingController otpController5 = TextEditingController();
-  // TextEditingController otpController6 = TextEditingController();
-
-  StreamController<ErrorAnimationType> errorController =
-      StreamController<ErrorAnimationType>();
+  TextEditingController otpController = TextEditingController();
 
   String? appSignature;
   String? otpCode;
   String? errorMsg;
 
-  // listenForOtp () async {
-  //   await SmsAutoFill().listenForCode();
-  // }
 
   @override
   void codeUpdated() {
     setState(() {
-      otpCode = code!;
+      otpCode = '';
+      // TODO: un commend the below and test for otp autofill with pin field on focus
+      // FocusScope.of(context).requestFocus(FocusNode());
+      otpCode = code;
       if (otpCode != null) {
-        otpController1.text = otpCode!;
-        // otpController1.text = otpCode![0];
-        // otpController2.text = otpCode![1];
-        // otpController3.text = otpCode![2];
-        // otpController4.text = otpCode![3];
+        otpController.text = otpCode!;
       }
     });
-
-    // after getting the otp to auto fetch , call the verify otp and navigate to next page on success
   }
 
   @override
@@ -67,15 +52,12 @@ class OtpPageState extends State<OtpPage> with CodeAutoFill {
         appSignature = signature;
       });
     });
-
   }
 
   @override
   dispose() {
-    otpController1.dispose();
-    // otpController2.dispose();
-    // otpController3.dispose();
-    // otpController4.dispose();
+    otpController.dispose();
+    otpCode = '';
     SmsAutoFill().unregisterListener();
     cancel();
     super.dispose();
@@ -124,147 +106,159 @@ class OtpPageState extends State<OtpPage> with CodeAutoFill {
             }
           },
           builder: (context, state) {
-            return Column(
+            return Stack(
               children: [
-                Expanded(
-                  flex: 2,
-                  child: Container(
-                    color: const Color(0xff21206a),
-                    child: Center(
-                      child: SizedBox(
-                        width: 80,
-                        child: SvgPicture.asset(
-                          "assets/icons/splash_logo1.svg",
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
+                const Background(),
                 Column(
                   children: [
-                    const Padding(
-                      padding: EdgeInsets.only(left: 10, right: 10, top: 20),
-                      child: Text(
-                        "Techwyse: Mark your seats ",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 25),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.all(12.0),
-                      child: Row(children: <Widget>[
-                        Expanded(
-                            child: Divider(
-                          indent: 20.0,
-                          endIndent: 10.0,
-                          thickness: 1.5,
-                        )),
-                        Text(
-                          "Enter OTP",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Color(0xFF1D1E1F)),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(top: 30, right: 30),
+                          child: SizedBox(
+                            width: 40,
+                            child: SvgPicture.asset(
+                              "assets/icons/splash_logo1.svg",
+                            ),
+                          ),
                         ),
-                        Expanded(
-                            child: Divider(
-                          indent: 20.0,
-                          endIndent: 10.0,
-                          thickness: 1.5,
-                        )),
-                      ]),
+                      ],
                     ),
-
-                    // OTP Fields
+                    const Spacer(),
                     Padding(
-                      padding: const EdgeInsets.only(
-                          left: 10, right: 10, top: 8.0, bottom: 20.0),
-                      child: PinFieldAutoFill(
-                        codeLength: 6,
-                        cursor: Cursor.disabled(),
-                        controller: otpController1,
-                        decoration: BoxLooseDecoration(
-                          strokeColorBuilder:
-                              FixedColorBuilder(Colors.black.withOpacity(0.3)),
+                      padding: const EdgeInsets.all(20),
+                      child: Container(
+                        decoration: ShapeDecoration(
+                          color: Colors.white,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(7)),
                         ),
-                        currentCode: otpCode,
-                        onCodeSubmitted: (code) {},
-                        onCodeChanged: (code) {
-                          if (code!.length == 6) {
-                            FocusScope.of(context).requestFocus(FocusNode());
-                          }
-                        },
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 40, horizontal: 30),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              "Please enter the OTP sent to",
+                              style: TextStyle(
+                                color: Color(0xFF6F6F6F),
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400,
+                                height: 0,
+                              ),
+                            ),
+                            Text(
+                              widget.phone,
+                              style: const TextStyle(
+                                color: Colors.black,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400,
+                                height: 0,
+                              ),
+                            ),
+
+                            // OTP Fields
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(top: 20, bottom: 10),
+                              child: PinFieldAutoFill(
+                                codeLength: 6,
+                                cursor: Cursor.disabled(),
+                                controller: otpController,
+                                decoration: BoxLooseDecoration(
+                                  gapSpace: 5,
+                                  strokeColorBuilder: FixedColorBuilder(
+                                      Colors.black.withOpacity(0.3)),
+                                ),
+                                currentCode: otpCode,
+                                onCodeSubmitted: (code) {},
+                                onCodeChanged: (code) {
+                                  if (code!.length == 6) {
+                                    FocusScope.of(context)
+                                        .requestFocus(FocusNode());
+                                  }
+                                },
+                              ),
+                            ),
+
+                            TimerWidget(
+                              phone: widget.phone,
+                            ),
+
+                            // Login Button
+                            if (state is LoginLoadingState)
+                              Padding(
+                                padding: const EdgeInsets.all(8),
+                                child: Container(
+                                  width: 400,
+                                  height: 50,
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xff8dc63f),
+                                    // color: const Color(0xff21206a),
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: const CircularProgressIndicator(
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              )
+                            else
+                              Padding(
+                                padding: const EdgeInsets.all(8),
+                                child: SizedBox(
+                                  width: 400,
+                                  height: 50,
+                                  child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      elevation: 3,
+                                      backgroundColor: const Color(0xff8dc63f),
+                                      // backgroundColor: const Color(0xff21206a),
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(8.0)),
+                                      minimumSize: const Size(100, 40),
+                                    ),
+                                    onPressed: () {
+                                      otpCode = otpController.text;
+                                      loginBloc.add(OtpChangeEvent(
+                                          otp: otpController.text));
+                                      loginBloc.add(LoginBtnClickEvent());
+                                      otpCode = '';
+                                    },
+                                    child: const Text(
+                                      'LOGIN',
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 20),
+                                    ),
+                                  ),
+                                ),
+                              ),
+
+                            if (errorMsg != null)
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Container(
+                                  padding: const EdgeInsets.all(8),
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                    color: Colors.red,
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: Text(
+                                    "$errorMsg",
+                                    style: const TextStyle(color: Colors.white),
+                                  ),
+                                ),
+                              ),
+                          ],
+                        ),
                       ),
                     ),
-
-                    // Login Button
-                    if (state is LoginLoadingState)
-                      Padding(
-                        padding: const EdgeInsets.all(8),
-                        child: Container(
-                          width: 400,
-                          height: 50,
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            color: const Color(0xff21206a),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: const CircularProgressIndicator(
-                            color: Colors.white,
-                          ),
-                        ),
-                      )
-                    else
-                      Padding(
-                        padding: const EdgeInsets.all(8),
-                        child: SizedBox(
-                          width: 400,
-                          height: 50,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              elevation: 3,
-                              backgroundColor: const Color(0xff21206a),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8.0)),
-                              minimumSize: const Size(100, 40),
-                            ),
-                            onPressed: () {
-                              loginBloc.add(
-                                  OtpChangeEvent(otp: otpController1.text));
-                              loginBloc.add(LoginBtnClickEvent());
-                            },
-                            child: const Text(
-                              'LOGIN',
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 20),
-                            ),
-                          ),
-                        ),
-                      ),
-
-                    const TimerWidget(),
-
-                    if (errorMsg != null)
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                          padding: const EdgeInsets.all(8),
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            color: Colors.red,
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Text(
-                            "$errorMsg",
-                            style: const TextStyle(color: Colors.white),
-                          ),
-                        ),
-                      ),
+                    const Spacer(),
                   ],
                 ),
-                const Spacer(),
               ],
             );
           },
