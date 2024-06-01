@@ -17,11 +17,11 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
         String phone = prefs.getString('phone') ?? '';
         // Use Dio for the API call
-        final response = await dio.post(
-          '${api}workluge-app/get-profile',
-          data: {
-            "phone": removeCountryCode(phone),
-          },
+        final response = await dio.get(
+          '${api}workluge-app/get-profile/${removeCountryCode(phone)}',
+          // data: {
+          //   "phone": removeCountryCode(phone),
+          // },
           options: Options(headers: {
             "content-type": "application/json",
             // 'Authorization': 'Bearer $testToken',
