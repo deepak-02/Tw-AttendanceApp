@@ -31,7 +31,7 @@ class TimerWidgetState extends State<TimerWidget> with CodeAutoFill {
   void callBloc(String signature) {
     // this is to avoid the warning :  Don't use 'BuildContext's across async gaps.
     BlocProvider.of<LoginBloc>(context)
-        .add(VerifyOtpBtnClickEvent(signature: signature, phone: widget.phone));
+        .add(VerifyOtpBtnClickEvent(signature: signature, phone: widget.phone, resend: true));
   }
 
   @override

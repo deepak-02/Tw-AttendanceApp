@@ -31,13 +31,20 @@ class OtpPageState extends State<OtpPage> with CodeAutoFill {
 
   @override
   void codeUpdated() {
+    if (kDebugMode) {
+      print("Code updated...");
+    }
     setState(() {
       otpCode = '';
-      // TODO: un commend the below and test for otp autofill with pin field on focus
-      // FocusScope.of(context).requestFocus(FocusNode());
+      FocusScope.of(context).requestFocus(FocusNode());
       otpCode = code;
       if (otpCode != null) {
         otpController.text = otpCode!;
+        if (kDebugMode) {
+          print(otpController.text);
+          print("updated...");
+        }
+
       }
     });
   }
@@ -103,6 +110,12 @@ class OtpPageState extends State<OtpPage> with CodeAutoFill {
                 transition: nav.Transition.circularReveal,
                 duration: const Duration(milliseconds: 800),
               );
+            } else if (state is OtpResendState) {
+              listenForCode();
+              setState(() { FocusScope.of(context).requestFocus(FocusNode());
+              otpController.clear();
+              otpCode = '';
+              });
             }
           },
           builder: (context, state) {
@@ -161,7 +174,7 @@ class OtpPageState extends State<OtpPage> with CodeAutoFill {
                             // OTP Fields
                             Padding(
                               padding:
-                                  const EdgeInsets.only(top: 20, bottom: 10),
+                              const EdgeInsets.only(top: 20, bottom: 10),
                               child: PinFieldAutoFill(
                                 codeLength: 6,
                                 cursor: Cursor.disabled(),
@@ -217,7 +230,7 @@ class OtpPageState extends State<OtpPage> with CodeAutoFill {
                                       // backgroundColor: const Color(0xff21206a),
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
-                                              BorderRadius.circular(8.0)),
+                                          BorderRadius.circular(8.0)),
                                       minimumSize: const Size(100, 40),
                                     ),
                                     onPressed: () {

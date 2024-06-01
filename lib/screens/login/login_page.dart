@@ -251,6 +251,6 @@ class _LoginPageState extends State<LoginPage> {
     BlocProvider.of<LoginBloc>(context)
         .add(PhoneChangeEvent(phone: phoneController.text));
     BlocProvider.of<LoginBloc>(context).add(VerifyOtpBtnClickEvent(
-        signature: signature, phone: phoneController.text));
+        signature: signature, phone: phoneController.text, resend: false));
   }
 }

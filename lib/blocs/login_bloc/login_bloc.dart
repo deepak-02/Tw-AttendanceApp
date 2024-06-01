@@ -30,6 +30,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           print("send OTP....");
         }
         phone = event.phone;
+
+        if(event.resend == true) {
+          emit(OtpResendState());
+        }
+
         emit(OtpLoadingState());
         if (event.phone == '' || event.phone.isEmpty) {
           emit(EmptyFieldsState());

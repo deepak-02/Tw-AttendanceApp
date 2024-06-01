@@ -22,6 +22,7 @@ class OtpChangeEvent extends LoginEvent {
 class VerifyOtpBtnClickEvent extends LoginEvent {
   final String signature;
   final String phone;
+  final bool resend;
 
-  VerifyOtpBtnClickEvent({required this.phone, required this.signature});
+  VerifyOtpBtnClickEvent({required this.resend, required this.phone, required this.signature});
 }

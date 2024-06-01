@@ -27,4 +27,6 @@ class OtpErrorState extends LoginState {
 
 class OtpSuccessState extends LoginState {}
 
+class OtpResendState extends LoginState {}
+
 class LoginSuccessState extends LoginState {}
